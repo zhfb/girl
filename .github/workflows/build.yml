@@ -1,0 +1,85 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Install NSIS
+      uses: repolevedavaj/install-nsis@v1.0.0
+      with:
+        nsis-version: 3.09
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller scripts/build_portable.spec
+        pyinstaller scripts/build.spec
+
+    - name: Build NSIS installer
+      run: |
+        makensis scripts/installer.nsi
+
+    - name: Create portable zip
+      run: |
+        $version = "1.0.0"
+        $appName = "AI女友"
+        
+        New-Item -ItemType Directory -Path release -Force
+        New-Item -ItemType Directory -Path temp_portable -Force
+        
+        Copy-Item dist/AIGirlfriend.exe -Destination temp_portable/
+        "便携版模式`n数据存储在 data/ 目录下" | Out-File -FilePath temp_portable/portable.txt -Encoding UTF8
+        Copy-Item docs/使用说明.txt -Destination temp_portable/ -ErrorAction SilentlyContinue
+        
+        Compress-Archive -Path temp_portable/* -DestinationPath release/${appName}_v${version}_便携版.zip
+        Remove-Item -Recurse -Force temp_portable
+
+    - name: Create installer zip
+      run: |
+        $version = "1.0.0"
+        $appName = "AI女友"
+        
+        New-Item -ItemType Directory -Path temp_installer -Force
+        
+        Copy-Item release/${appName}_v${version}_安装程序.exe -Destination temp_installer/
+        Copy-Item docs/使用说明.txt -Destination temp_installer/ -ErrorAction SilentlyContinue
+        
+        Compress-Archive -Path temp_installer/* -DestinationPath release/${appName}_v${version}_安装版.zip
+        Remove-Item -Recurse -Force temp_installer
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-packages
+        path: release/
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release/*.zip
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
