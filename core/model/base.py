@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, AsyncGenerator
+from typing import List, Dict, AsyncGenerator, Union
 
 
 class LLMAdapter(ABC):
@@ -11,7 +11,7 @@ class LLMAdapter(ABC):
         self,
         messages: List[Dict[str, str]],
         stream: bool = False
-    ) -> AsyncGenerator[str, None] | str:
+    ) -> Union[AsyncGenerator[str, None], str]:
         pass
 
 

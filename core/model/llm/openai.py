@@ -1,5 +1,5 @@
 import aiohttp
-from typing import List, Dict, AsyncGenerator
+from typing import List, Dict, AsyncGenerator, Union
 from ..base import LLMAdapter
 
 
@@ -16,7 +16,7 @@ class OpenAIAdapter(LLMAdapter):
         self,
         messages: List[Dict[str, str]],
         stream: bool = False
-    ) -> AsyncGenerator[str, None] | str:
+    ) -> Union[AsyncGenerator[str, None], str]:
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}"
