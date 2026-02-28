@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from pathlib import Path
 
 
@@ -11,8 +12,27 @@ class ConfigManager:
         self.load_config()
 
     @staticmethod
+    def get_app_dir():
+        if getattr(sys, 'frozen', False):
+            return Path(sys.executable).parent
+        else:
+            return Path.cwd()
+
+    @staticmethod
+    def is_portable_mode():
+        app_dir = ConfigManager.get_app_dir()
+        return (app_dir / "portable.txt").exists()
+
+    @staticmethod
     def get_config_dir():
         app_name = "AIGirlfriend"
+        
+        if ConfigManager.is_portable_mode():
+            app_dir = ConfigManager.get_app_dir()
+            config_dir = app_dir / "data"
+            config_dir.mkdir(parents=True, exist_ok=True)
+            return config_dir
+        
         if os.name == "nt":
             base_dir = Path(os.environ["APPDATA"])
         elif os.name == "posix":
