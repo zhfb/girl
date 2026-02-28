@@ -68,6 +68,24 @@ ai-girlfriend/
 
 ## 打包发布
 
+### 方式一：使用 GitHub Actions 自动打包（推荐）
+
+项目已配置 GitHub Actions，可自动在 Windows 环境下打包：
+
+1. 访问 https://github.com/zhfb/girl/actions
+2. 点击 "Build Release" workflow
+3. 点击 "Run workflow" → 选择分支 → 点击 "Run workflow"
+4. 等待打包完成（约 10-15 分钟）
+5. 在 workflow 运行结果中下载 artifacts
+
+或者创建 tag 触发自动发布：
+```bash
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+```
+
+### 方式二：手动在 Windows 上打包
+
 使用提供的自动化脚本进行打包（需要在 Windows 环境下）：
 
 ```bash
