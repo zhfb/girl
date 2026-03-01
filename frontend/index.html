@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI女友</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>AI女友</h1>
+            <button id="settingsBtn" class="settings-btn">⚙️ 设置</button>
+        </header>
+
+        <main class="chat-container">
+            <div id="chatMessages" class="chat-messages">
+                <div class="message assistant">
+                    <div class="avatar">🤖</div>
+                    <div class="message-content">
+                        <p>你好呀！我是你的AI女友，很高兴认识你！</p>
+                        <p>在开始聊天前，请先点击右上角的设置按钮配置API密钥哦~</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <textarea id="messageInput" placeholder="输入你想说的话..." rows="2"></textarea>
+                <button id="sendBtn" class="send-btn">发送</button>
+            </div>
+        </main>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>设置</h2>
+                <button id="closeModal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>选择模型</label>
+                    <select id="modelSelect">
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="openai">OpenAI</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="apiKey" placeholder="输入你的API密钥">
+                </div>
+                
+                <div class="form-group">
+                    <label>API Base (可选)</label>
+                    <input type="text" id="apiBase" placeholder="https://api.deepseek.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>模型名称</label>
+                    <input type="text" id="modelName" placeholder="deepseek-chat">
+                </div>
+                
+                <div class="form-group">
+                    <label>角色名字</label>
+                    <input type="text" id="charName" placeholder="小萌">
+                </div>
+                
+                <div class="form-group">
+                    <label>性格标签 (用逗号分隔)</label>
+                    <input type="text" id="charPersonality" placeholder="温柔,可爱,体贴">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="clearChatBtn" class="secondary-btn">清空对话</button>
+                <button id="saveSettingsBtn" class="primary-btn">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

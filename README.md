@@ -1,45 +1,31 @@
-# 💖 AI女友
+# 💖 AI女友 - Web版本
 
-基于多模型API的智能AI女友应用程序，支持多种语言模型和语音模型，具有强大的记忆能力、丰富的交互体验和高度个性化定制功能。
+基于Web的智能AI女友应用程序，用户启动服务后通过浏览器访问 localhost 使用。支持多种语言模型，具有强大的记忆能力和高度个性化定制功能。
 
 ## 功能特点
 
 - 🤖 **多模型支持**：DeepSeek、OpenAI 等多种语言模型
-- 🗣️ **语音交互**：TTS 文字转语音，支持多种音色
-- 🧠 **记忆系统**：短期和长期记忆，不会忘记对话内容
-- ✏️ **自定义提示词**：灵活的角色设定和提示词系统
-- 🎨 **精美界面**：PyQt6 打造的现代化用户界面
-- 📦 **两种发布方式**：
-  - **便携版**：解压即用，数据存储在程序目录
-  - **安装版**：NSIS 安装程序，正规软件体验
+- 🧠 **记忆系统**：短期记忆，不会忘记最近对话内容
+- ✏️ **自定义提示词**：灵活的角色设定和配置
+- 🎨 **精美界面**：现代化的 Web 聊天界面
+- 🌐 **跨平台**：通过浏览器访问，支持 Windows、Mac、Linux
 
 ## 快速开始
 
-### 开发者
+### 运行程序
 
 1. 克隆或下载项目
-2. 创建虚拟环境：`python -m venv venv`
-3. 激活虚拟环境：
-   - Windows: `venv\Scripts\activate`
-   - Mac/Linux: `source venv/bin/activate`
-4. 安装依赖：`pip install -r requirements.txt`
-5. 运行程序：`python main.py`
+2. 安装依赖：`pip install -r requirements.txt`
+3. 启动服务：`python start.py`
+4. 服务启动后会自动打开浏览器访问 http://localhost:8000
 
-### 用户
+### 使用说明
 
-#### 便携版（推荐）
-1. 下载 `AI女友_v1.0.0_便携版.zip`
-2. 解压到任意位置
-3. 双击运行 `AIGirlfriend.exe`
-4. 在设置中配置 API Key
-5. 开始使用！
-
-#### 安装版
-1. 下载 `AI女友_v1.0.0_安装版.zip`
-2. 解压后运行安装程序
-3. 按照向导完成安装
-4. 启动程序后在设置中配置 API Key
-5. 开始使用！
+1. 首次使用时，点击右上角的 ⚙️ 设置按钮
+2. 选择要使用的模型（DeepSeek 或 OpenAI）
+3. 输入你的 API Key
+4. 保存设置
+5. 返回聊天界面开始对话！
 
 ## 获取 API Key
 
@@ -56,67 +42,31 @@ ai-girlfriend/
 │   ├── memory/          # 记忆系统
 │   ├── chat/            # 对话管理
 │   └── prompt/          # 提示词系统
-├── ui/                  # 界面组件
-├── assets/              # 资源文件
-├── data/                # 数据存储
+├── backend/             # Web 后端（FastAPI）
+│   ├── main.py          # 后端主入口
+│   └── api/             # API 路由
+├── frontend/            # Web 前端
+│   ├── index.html       # 主页面
+│   ├── css/
+│   │   └── style.css    # 样式文件
+│   └── js/
+│       └── app.js       # 前端逻辑
 ├── utils/               # 工具函数
-├── scripts/             # 打包脚本
 ├── docs/                # 文档
-├── main.py              # 主程序入口
+├── start.py             # 启动脚本（自动打开浏览器）
 └── requirements.txt     # 依赖列表
 ```
 
-## 打包发布
+## 技术架构
 
-### 方式一：使用 GitHub Actions 自动打包（推荐）
+- **后端**：FastAPI（高性能异步 Web 框架）
+- **前端**：原生 HTML/CSS/JavaScript（无需构建工具）
+- **实时通信**：WebSocket（流式对话输出）
+- **数据存储**：本地 JSON 配置文件
 
-项目已配置 GitHub Actions，可自动在 Windows 环境下打包：
+## 停止服务
 
-1. 访问 https://github.com/zhfb/girl/actions
-2. 点击 "Build Release" workflow
-3. 点击 "Run workflow" → 选择分支 → 点击 "Run workflow"
-4. 等待打包完成（约 10-15 分钟）
-5. 在 workflow 运行结果中下载 artifacts
-
-或者创建 tag 触发自动发布：
-```bash
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin v1.0.0
-```
-
-### 方式二：手动在 Windows 上打包
-
-使用提供的自动化脚本进行打包（需要在 Windows 环境下）：
-
-```bash
-# 1. 安装依赖
-pip install -r requirements.txt
-pip install pyinstaller
-
-# 2. 安装 NSIS（需要先下载安装）
-# 下载地址：https://nsis.sourceforge.io/Download
-
-# 3. 运行打包脚本
-cd scripts
-python build.py
-```
-
-这将依次执行：
-1. 清理旧的构建文件
-2. 打包便携版（单文件 exe）
-3. 打包安装版（文件夹形式）
-4. 使用 NSIS 制作安装程序
-5. 创建两个发布压缩包：
-   - `AI女友_v1.0.0_便携版.zip`
-   - `AI女友_v1.0.0_安装版.zip`
-
-## 便携版说明
-
-便携版通过在程序目录下放置 `portable.txt` 文件来识别便携模式。在此模式下：
-- 所有数据存储在程序目录下的 `data/` 文件夹
-- 不写入系统注册表
-- 可以放在 U 盘随身携带
-- 方便备份和迁移数据
+在终端按 `Ctrl+C` 即可停止服务。
 
 ## 许可证
 
